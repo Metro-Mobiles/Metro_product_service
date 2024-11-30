@@ -45,13 +45,16 @@ public class ProductController {
             @RequestParam("category") String category,
             @RequestParam("supplierName") String supplierName,
             @RequestParam("quantity") Integer quantity,
-            @RequestParam("skuCode") String skuCode) {
+            @RequestParam("skuCode") String skuCode,
+            @RequestParam("description") String description,
+            @RequestParam("ratingCount") Integer ratingCount,
+            @RequestParam("rating") float rating) {
 
         // Upload the image to S3 and get the URL
         String imageUrl = imageUploadService.uploadFile(image);
 
         // Create the product with the image URL and other data
-        Product product = new Product(imageUrl, name, unitPrice, unitCost, discount, category, supplierName, quantity, unitPrice * quantity - discount, skuCode);
+        Product product = new Product(imageUrl, name, unitPrice, unitCost, discount, category, supplierName, quantity, unitPrice * quantity - discount, skuCode, description, ratingCount, rating);
 
         // Save the product and return it
         Product savedProduct = productService.createProduct(product, image);
@@ -64,20 +67,17 @@ public class ProductController {
             @ModelAttribute ProductUpdateRequest updateRequest,
             @RequestParam(value = "image", required = false) MultipartFile image) {
 
-        // Find the existing product
         Product existingProduct = productService.getProductById(id);
 
         if (existingProduct == null) {
-            return ResponseEntity.notFound().build(); // Handle product not found
+            return ResponseEntity.notFound().build();
         }
 
-        // If a new image is provided, upload it and update the image URL
         if (image != null && !image.isEmpty()) {
             String imageUrl = imageUploadService.uploadFile(image);
             existingProduct.setImage(imageUrl);
         }
 
-        // Update product details from the request body if they were provided
         if (updateRequest.getName() != null) existingProduct.setName(updateRequest.getName());
         if (updateRequest.getUnitPrice() != null) existingProduct.setUnitPrice(updateRequest.getUnitPrice());
         if (updateRequest.getUnitCost() != null) existingProduct.setUnitCost(updateRequest.getUnitCost());
@@ -86,14 +86,16 @@ public class ProductController {
         if (updateRequest.getSupplierName() != null) existingProduct.setSupplierName(updateRequest.getSupplierName());
         if (updateRequest.getQuantity() != null) existingProduct.setQuantity(updateRequest.getQuantity());
         if (updateRequest.getSkuCode() != null) existingProduct.setSkuCode(updateRequest.getSkuCode());
+        if (updateRequest.getDescription() != null) existingProduct.setDescription(updateRequest.getDescription());
+        if (updateRequest.getRatingCount() != null) existingProduct.setRatingCount(updateRequest.getRatingCount());
+        if (updateRequest.getRating() != null) existingProduct.setRating(updateRequest.getRating());
 
-        // Recalculate total amount
         existingProduct.setTotalAmount(existingProduct.getUnitPrice() * existingProduct.getQuantity() - existingProduct.getDiscount());
 
-        // Save and return the updated product
         Product updatedProduct = productService.updateProduct(id, existingProduct, image);
         return ResponseEntity.ok(updatedProduct);
     }
+
 
     @DeleteMapping("/deleteProduct")
     public ResponseEntity<Void> deleteProduct(@RequestParam Long id) {

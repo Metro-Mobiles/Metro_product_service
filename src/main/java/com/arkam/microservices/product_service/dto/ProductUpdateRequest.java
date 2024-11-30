@@ -9,8 +9,11 @@ public class ProductUpdateRequest {
     private String supplierName;
     private Integer quantity;
     private String skuCode;
+    private String description;
+    private Integer ratingCount;
+    private Float rating;
 
-    // Getters and Setters
+
     public String getName() {
         return name;
     }
@@ -73,5 +76,29 @@ public class ProductUpdateRequest {
 
     public void setSkuCode(String skuCode) {
         this.skuCode = skuCode;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getRatingCount() {
+        return ratingCount;
+    }
+
+    public void setRatingCount(Integer ratingCount) {
+        this.ratingCount = ratingCount;
+    }
+
+    public Float getRating() {
+        return rating;
+    }
+
+    public void setRating(Float rating) {
+        this.rating = rating;
     }
 }

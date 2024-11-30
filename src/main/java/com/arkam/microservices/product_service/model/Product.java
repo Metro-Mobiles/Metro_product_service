@@ -29,6 +29,39 @@ public class Product {
     private String category;
 
     @Column(nullable = false)
+    private String description;
+
+    @Column(nullable = false)
+    private Integer ratingCount;
+
+    @Column(nullable = false)
+    private float rating;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getRatingCount() {
+        return ratingCount;
+    }
+
+    public void setRatingCount(Integer ratingCount) {
+        this.ratingCount = ratingCount;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    @Column(nullable = false)
     private String supplierName;
 
     @Column(nullable = false)
@@ -45,7 +78,7 @@ public class Product {
 
     // Constructor to initialize the product object with the image URL and other attributes
     public Product(String image, String name, Double unitPrice, Double unitCost, Double discount, String category,
-                   String supplierName, Integer quantity, Double totalAmount, String skuCode) {
+                   String supplierName, Integer quantity, Double totalAmount, String skuCode,String description, Integer ratingCount, float rating) {
         this.image = image;
         this.name = name;
         this.unitPrice = unitPrice;
@@ -56,9 +89,12 @@ public class Product {
         this.quantity = quantity;
         this.totalAmount = totalAmount;
         this.skuCode = skuCode;
+        this.ratingCount = ratingCount;
+        this.description= description;
+        this.rating = rating;
     }
 
-    // Getters and setters for all fields
+
     public Long getId() {
         return id;
     }
