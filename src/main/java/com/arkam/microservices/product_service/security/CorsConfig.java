@@ -1,4 +1,4 @@
-package com.arkam.microservices.user_service.security;
+package com.arkam.microservices.product_service.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,10 +12,13 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("*","http://localhost:3000")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE");
+                registry.addMapping("/**") // Apply CORS to all paths
+                        .allowedOriginPatterns("https://*", "http://localhost:*")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE") // Allow specific HTTP methods
+                        .allowedHeaders("*") // Allow all headers
+                        .allowCredentials(true); // Allow cookies (optional)
             }
         };
     }
 }
+
